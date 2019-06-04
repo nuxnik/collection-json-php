@@ -11,6 +11,12 @@
             "email": "enmanuel@cueva-e.me",
             "homepage": "http://cueva-e.me",
             "role": "Software Engineer/Developer"
+        },
+        {
+            "name": "S. Fleming",
+            "email": "nuxnik@int5.net",
+            "homepage": "https://github.com/nuxnik/",
+            "role": "Software"
         }
     ],
     "require": {

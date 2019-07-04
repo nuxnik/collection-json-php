@@ -6,6 +6,7 @@ use CollectionPlusJson\Link;
 use CollectionPlusJson\Item;
 use CollectionPlusJson\Query;
 use CollectionPlusJson\Util\Href;
+use GuzzleHttp\Client as GuzzleClient;
 
 class CollectionTest extends PHPUnit_Framework_TestCase
 {
@@ -18,7 +19,7 @@ class CollectionTest extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->assertEquals('http://test.com/api/', $this->href);
-        $this->collection = new \CollectionPlusJson\Collection( $this->href );
+        $this->collection = new \CollectionPlusJson\Collection( $this->href, new GuzzleClient() );
     }
 
     public function testOutput()
@@ -75,6 +76,37 @@ class CollectionTest extends PHPUnit_Framework_TestCase
         $queries = $this->collection->addQuery( $query )->getQueries();
         $this->assertCount( 1, $queries );
         $this->assertEquals( $query, $queries[0] );
+    }
+
+    public function testClient()
+    {
+        /*
+        $href = 'http://127.0.0.1:8000/api/v1';
+        $client = new GuzzleClient(['base_uri' => $href, 'debug' => true]);
+        $this->collection = new \CollectionPlusJson\Collection( $href, $client );
+         */
+
+        // get an item
+        //$items = $this->collection->get('/color')->getItems();
+        /*
+        $collection = $this->collection->get('/color?template');
+        $template = $collection->getTemplate();
+        $template->setRgbValue('#00666');
+        $template->setName('satanic');
+        $template->setSortOrder('668');
+        $c = $collection->post();
+        $item = $c->getFirstItem();
+        var_dump($item->getId());
+         */
+
+        /*
+        $collection = $this->collection->get('/order?template&limit=10');
+        $items = $collection->getItems();
+        foreach ($items as $item) {
+            $collection = $item->getLinkByRel("customer")->follow();
+            var_dump($collection->getHref()->getUrl());exit;
+        }
+         */
     }
 
     public function testImportJson()
@@ -141,18 +173,20 @@ class CollectionTest extends PHPUnit_Framework_TestCase
                 ]
             }
         ],
-        "template": [
-            {
-                "name": "field1",
-                "value": "",
-                "prompt": "FIELD1"
-            },
-            {
-                "name": "field2",
-                "value": "",
-                "prompt": "FIELD2"
-            }
-        ],
+        "template": {
+            "data": [
+                {
+                    "name": "field1",
+                    "value": "",
+                    "prompt": "FIELD1"
+                },
+                {
+                    "name": "field2",
+                    "value": "",
+                    "prompt": "FIELD2"
+                }
+            ]
+        },
         "error": {
             "title": "ERROR_TITLE",
             "code": 404,

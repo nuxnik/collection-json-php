@@ -5,9 +5,8 @@ namespace CollectionPlusJson;
 /**
  * Implements magic methods to get and set by method name
  *
- * @abstract
  */
-abstract class DataEditor
+trait DataEditorTrait
 {
     /** @var  DataObject[] */
     protected $data = array();

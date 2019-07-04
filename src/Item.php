@@ -2,10 +2,16 @@
 
 namespace CollectionPlusJson;
 
-use \CollectionPlusJson\Util\Href;
+use CollectionPlusJson\AbstractClient;
+use CollectionPlusJson\Util\Href;
+use GuzzleHttp\Client as GuzzleClient;
 
-class Item extends DataEditor
+class Item extends AbstractClient
 {
+    /**
+     * Add the data editor trait
+     */
+    use DataEditorTrait;
 
     /** @var Href */
     protected $href;
@@ -16,8 +22,10 @@ class Item extends DataEditor
     /**
      * @param string|Href $href
      */
-    public function __construct( $href )
+    public function __construct( $href, GuzzleClient $client = null )
     {
+        parent::__construct($client);
+
         if(!$href instanceof Href){
             $href = new Href($href);
         }
@@ -113,4 +121,5 @@ class Item extends DataEditor
             $this->triggerNoMethodError($name);
         }
     }
+
 }

@@ -2,8 +2,17 @@
 
 namespace CollectionPlusJson;
 
-class Template extends DataEditor
+use CollectionPlusJson\DataEditorTrait;
+
+class Template
 {
+    /**
+     * Add the data editor trait
+     */
+    use DataEditorTrait {
+        addData as public traitAddData;
+    }
+
     /**
      * The class constructor.
      *
@@ -21,7 +30,7 @@ class Template extends DataEditor
 
             //assign the json data array
             foreach ($data['template']['data'] as $row) {
-                parent::addData($row['name'], $row['value']);
+                $this->traitAddData($row['name'], $row['value']);
             }
         }
     }
@@ -35,7 +44,7 @@ class Template extends DataEditor
      */
     public function addData( $name, $prompt = '', $value = '' )
     {
-        return parent::addData($name, '', $prompt);
+        return $this->traitAddData($name, '', $prompt);
     }
 
     /**
@@ -123,6 +132,7 @@ class Template extends DataEditor
                 }
             }
         }
+        print_r($this->data);exit;
 
         return $this;
     }

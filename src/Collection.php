@@ -2,9 +2,11 @@
 
 namespace CollectionPlusJson;
 
+use CollectionPlusJson\AbstractClient;
 use CollectionPlusJson\Util\Href;
+use GuzzleHttp\Client as GuzzleClient;
 
-class Collection
+class Collection extends AbstractClient
 {
 
     const VERSION = '1.0';
@@ -36,8 +38,10 @@ class Collection
     /**
      * @param string $href|Href
      */
-    public function __construct( $data )
+    public function __construct( $data, GuzzleClient $client = null )
     {
+        parent::__construct($client);
+
         if($data instanceof Href){
             $this->href = $data;
         } else if(is_array($data)){
@@ -264,12 +268,12 @@ class Collection
     {
         if (isset($this->json['items'])) {
             foreach ($this->json['items'] as $item) {
-                $itemObject = new Item($item['href']);
+                $itemObject = new Item($item['href'], $this->client);
                 foreach ($item['data'] as $data) {
                     $itemObject->addData($data['name'], $data['value'], $data['prompt']);
                 }
                 foreach ($item['links'] as $link) {
-                    $itemObject->addLink(new Link($link['href'], $link['rel'], $link['name'], $link['render'], $link['prompt']));
+                    $itemObject->addLink(new Link($link['href'], $link['rel'], $link['name'], $link['render'], $link['prompt'], $this->client));
                 }
                 $this->items[] = $itemObject;
             }
@@ -278,9 +282,9 @@ class Collection
 
     private function assignTemplate()
     {
-        if (isset($this->json['template'])) {
+        if (isset($this->json['template']['data'])) {
             $this->template = new Template();
-            foreach ($this->json['template'] as $template) {
+            foreach ($this->json['template']['data'] as $template) {
                 $this->template->addData($template['name'], $template['prompt']);
             }
         }
@@ -290,7 +294,7 @@ class Collection
     {
         if (isset($this->json['links'])) {
             foreach ($this->json['links'] as $link) {
-                $this->links[] = new Link($link['href'], $link['rel'], $link['name'], $link['render'], $link['prompt']);
+                $this->links[] = new Link($link['href'], $link['rel'], $link['name'], $link['render'], $link['prompt'], $this->client);
             }
         }
     }
@@ -299,7 +303,7 @@ class Collection
     {
         if (isset($this->json['queries'])) {
             foreach ($this->json['queries'] as $query) {
-                $queryObject = new Query($query['href'], $query['rel'], $query['prompt']);
+                $queryObject = new Query($query['href'], $query['rel'], $query['prompt'], $this->client);
                 foreach ($query['data'] as $data) {
                     $queryObject->addData($data['name'], $data['value'], $data['prompt']);
                 }

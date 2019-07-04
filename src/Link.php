@@ -2,11 +2,11 @@
 
 namespace CollectionPlusJson;
 
-use \CollectionPlusJson\Util\Href;
+use CollectionPlusJson\Util\Href;
+use GuzzleHttp\Client as GuzzleClient;
 
-class Link
+class Link extends AbstractClient
 {
-
     /** @var  Href */
     protected $href;
 
@@ -29,8 +29,10 @@ class Link
      * @param string $render
      * @param string $prompt
      */
-    public function __construct( $href, $rel, $name = '', $render = '', $prompt = '' )
+    public function __construct( $href, $rel, $name = '', $render = '', $prompt = '', GuzzleClient $client = null )
     {
+        parent::__construct($client);
+
         if(!$href instanceof Href){
             $href = new Href($href);
         }
@@ -138,30 +140,5 @@ class Link
             $object->$name = $value;
         }
         return $object;
-    }
-    /**
-     * follow
-     *
-     * @return Collection
-     */
-    public function follow($params = null)
-    {
-        $href = $this->getHref();
-
-        // Create a stream
-        $opts = [
-            "http" => [
-                "method" => "GET",
-                "header" =>
-                    "Content-Type: application/vnd.collection+json\r\n"
-            ]
-        ];
-
-        if (is_array($params)) {
-            $href .= '?' . http_build_query($params);
-        }
-        $response = file_get_contents($href, false, $opts);
-        $collection = new Collection($resopnse);
-        return $collection;
     }
 }

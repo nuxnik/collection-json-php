@@ -1,10 +1,6 @@
-[![Build Status](https://travis-ci.org/cuevae/collection-json-php.svg?branch=master)](https://travis-ci.org/cuevae/collection-json-php)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/cuevae/collection-json-php/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/cuevae/collection-json-php/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/cuevae/collection-json-php/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/cuevae/collection-json-php/?branch=master)
-
 # collectionPlusJson-php
 
-version: 1.0.1
+version: 1.0.0
 
 ## Introduction
 >**Collection+JSON** is a JSON-based read/write hypermedia-type designed to support management and querying of simple collections.
@@ -37,13 +33,8 @@ version: 1.0.1
     That code should output:
     ```JSON
        {"collection":
-          {"version":"1.0.1",
-           "href":"http:\/\/api.test.io",
-           "links":[],
-           "items":[],
-           "queries":[],
-           "template":null,
-           "error":null
+          {"version":"1.0.0",
+           "href":"http:\/\/api.test.io"
            }
        }
     ```
@@ -58,26 +49,26 @@ $colors = new Collection('http://api.colors.io/');
 $colors->addLink(new Link($colors->getHref()->extend('rss'), 'feed', 'rss-feed', '', 'Subscribe to our RSS feed!'));
 
 //Build an item
-$color1 = new Item($colors->getHref()->extend('color1'));
+$color1 = new Item($colors->getHref()->extend('1'));
 $color1->addData('id', '1', 'This is the color id.')
-       ->addData('hex_value', '#9932CC', 'This is the color in hex format.');
+       ->addData('hexValue', '#9932CC', 'This is the color in hex format.');
 
 // or add data with dynamic setter
-$color1->setHuman_value('DarkOrchid', 'This is the color in human readable format.');
+$color1->sethumanValue('DarkOrchid', 'This is the color in human readable format.');
 
 $color1->addLink(new Link('http://www.w3schools.com/tags/ref_colornames.asp', 'source'));
-$color1->addLink(new Link('http://www.w3schools.com/tags/ref_color_tryit.asp?hex=9932CC', 'color-test'));
+$color1->addLink(new Link('http://www.w3schools.com/tags/ref_color_tryit.asp?hex=9932CC', 'colorTest'));
 
 //Build a second item
-$color2 = new Item($colors->getHref()->extend('color2'));
+$color2 = new Item($colors->getHref()->extend('2'));
 $color2->addData('id', '2', 'This is the color id.')
-       ->addData('hex_value', '#FFFFF0', 'This is the color in hex format.');
+       ->addData('hexValue', '#FFFFF0', 'This is the color in hex format.');
 
 // or add data with dynamic setter
-$color2->setHuman_value('DarkOrchid', 'This is the color in human readable format.');
+$color2->sethumanValue('DarkOrchid', 'This is the color in human readable format.');
 
 $color2->addLink(new Link('http://www.w3schools.com/tags/ref_colornames.asp', 'source'));
-$color2->addLink(new Link('http://www.w3schools.com/tags/ref_color_tryit.asp?hex=FFFFF0', 'color-test'));
+$color2->addLink(new Link('http://www.w3schools.com/tags/ref_color_tryit.asp?hex=FFFFF0', 'colorTest'));
 
 //Add both items
 $colors->addItems([$color1, $color2]);
@@ -90,9 +81,9 @@ $colors->addQuery($query);
 //Set the collection template
 $template = new Template();
 $template->addData('id', 'This is the color id.')
-         ->addData('hex_value', 'This is the color in hex format.')
-         ->addData('human_value', 'This is the color in human readable format.')
-         ->addData('color-test', 'Link to test how your color looks with other colors.');
+         ->addData('hexValue', 'This is the color in hex format.')
+         ->addData('humanValue', 'This is the color in human readable format.')
+         ->addData('colorTest', 'Link to test how your color looks with other colors.');
 
 // or add data with dynamic setter
 $template->setSource('Link to colors source');
@@ -120,12 +111,11 @@ Output would be:
                 "rel": "feed",
                 "prompt": "Subscribe to our RSS feed!",
                 "name": "rss-feed",
-                "render": ""
             }
         ],
         "items": [
             {
-                "href": "http://api.colors.io/color1",
+                "href": "http://api.colors.io/1",
                 "data": [
                     {
                         "name": "id",
@@ -133,12 +123,12 @@ Output would be:
                         "prompt": "This is the color id."
                     },
                     {
-                        "name": "hex_value",
+                        "name": "hexValue",
                         "value": "#9932CC",
                         "prompt": "This is the color in hex format."
                     },
                     {
-                        "name": "human_value",
+                        "name": "humanValue",
                         "value": "DarkOrchid",
                         "prompt": "This is the color in human readable format."
                     }
@@ -147,21 +137,15 @@ Output would be:
                     {
                         "href": "http://www.w3schools.com/tags/ref_colornames.asp",
                         "rel": "source",
-                        "prompt": "",
-                        "name": "",
-                        "render": ""
                     },
                     {
                         "href": "http://www.w3schools.com/tags/ref_color_tryit.asp?hex=9932CC",
-                        "rel": "color-test",
-                        "prompt": "",
-                        "name": "",
-                        "render": ""
+                        "rel": "colorTest",
                     }
                 ]
             },
             {
-                "href": "http://api.colors.io/color2",
+                "href": "http://api.colors.io/2",
                 "data": [
                     {
                         "name": "id",
@@ -169,12 +153,12 @@ Output would be:
                         "prompt": "This is the color id."
                     },
                     {
-                        "name": "hex_value",
+                        "name": "hexValue",
                         "value": "#FFFFF0",
                         "prompt": "This is the color in hex format."
                     },
                     {
-                        "name": "human_value",
+                        "name": "humanValue",
                         "value": "Ivory",
                         "prompt": "This is the color in human readable format."
                     }
@@ -183,16 +167,10 @@ Output would be:
                     {
                         "href": "http://www.w3schools.com/tags/ref_colornames.asp",
                         "rel": "source",
-                        "prompt": "",
-                        "name": "",
-                        "render": ""
                     },
                     {
                         "href": "http://www.w3schools.com/tags/ref_color_tryit.asp?hex=FFFFF0",
-                        "rel": "color-test",
-                        "prompt": "",
-                        "name": "",
-                        "render": ""
+                        "rel": "colorTest",
                     }
                 ]
             }
@@ -201,7 +179,6 @@ Output would be:
             {
                 "href": "http://api.colors.io/search",
                 "rel": "search",
-                "prompt": "",
                 "data": [
                     {
                         "name": "search",
@@ -218,12 +195,12 @@ Output would be:
                 "prompt": "This is the color id."
             },
             {
-                "name": "hex_value",
+                "name": "hexValue",
                 "value": "",
                 "prompt": "This is the color in hex format."
             },
             {
-                "name": "human_value",
+                "name": "humanValue",
                 "value": "",
                 "prompt": "This is the color in human readable format."
             },
@@ -233,7 +210,7 @@ Output would be:
                 "prompt": "Link to colors source."
             },
             {
-                "name": "color-test",
+                "name": "colorTest",
                 "value": "",
                 "prompt": "Link to test how your color looks with other colors."
             }
@@ -246,10 +223,7 @@ Output would be:
     }
 }
 
-*/
-
 ```
-
 # Consume a Collection+JSON object
 
 This functionality enables a plain json string in Collection+JSON format to be consumed and translated into a Collection object for easy manipulation.
@@ -290,4 +264,122 @@ $entity->setBar($template->getBar());
 // save to example database
 $repo->persist($entity);
 $repo->flush();
+```
+
+# Create a client to communicate with Collection+JSON server
+
+## GET all data
+
+```php
+// init the http client and collection class
+$href = 'http://api.colors.io';
+$client = new GuzzleClient(['base_uri' => $href]);
+$collection = new \CollectionPlusJson\Collection( $href, $client );
+
+// get data from endpoint
+$collection = $collection->get();
+
+// iterate through the items
+$items = $collection->getItems();
+foreach( $items as $item) {
+   echo $item->getId() . "\n";
+}
+```
+
+If the JSON object is the same as the one above the following will be output:
+
+```
+1
+2
+```
+
+## GET single item and update it
+
+```php
+// init the http client and collection class
+$href = 'http://api.colors.io';
+$client = new GuzzleClient(['base_uri' => $href]);
+$collection = new \CollectionPlusJson\Collection( $href, $client );
+
+// get data from endpoint
+$collection = $collection->get('/color2');
+
+// show the hex value
+$item = $collection->getFirstItem();
+echo $item->getHexValue() . "\n";
+
+// update the color
+$item->setHexValue('#FF0000');
+$item->setHumanValue('red');
+
+// import the item to the collection template
+$collection->getTemplate()->importItem($item);
+
+// put/save to server
+$collection = $collection->put();
+
+// show the hex value
+$item = $collection->getFirstItem();
+echo $item->getHexValue() . "\n";
+```
+
+If the JSON object is the same as the one above the following will be output:
+
+```
+#FFFFF0
+#FF0000
+```
+
+## POST and DELETE single item
+
+```php
+// init the http client and collection class
+$href = 'http://api.colors.io';
+$client = new GuzzleClient(['base_uri' => $href]);
+$collection = new \CollectionPlusJson\Collection( $href, $client );
+
+// get data from endpoint
+$collection = $collection->get();
+
+// enter values into the template
+$tpl = $collection->getTemplate();
+$tpl->setHexValue('#00FF00');
+$tpl->setHumanValue('green');
+
+// post/save to server
+$collection = $collection->post();
+
+// show the hex value
+$item = $collection->getFirstItem();
+echo $item->getHexValue() . "\n";
+
+// delete the item
+$item->delete();
+```
+
+If the JSON object is the same as the one above the following will be output:
+
+```
+#00FF00
+```
+
+## Crawl / follow links
+
+```php
+// init the http client and collection class
+$href = 'http://api.colors.io';
+$client = new GuzzleClient(['base_uri' => $href]);
+$collection = new \CollectionPlusJson\Collection( $href, $client );
+
+// get data from endpoint
+$item = $collection->get()->getFirstItem()
+$collection = $item->follow();
+
+echo  $collection->getFirstItem()->getHumanValue();
+```
+
+If the JSON object is the same as the one above the following will be output:
+
+```
+DarkOrchid
 ```

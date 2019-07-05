@@ -56,6 +56,7 @@ class CollectionTest extends PHPUnit_Framework_TestCase
         $item = new Item( new Href( $this->href ) );
         $items = $this->collection->addItem( $item )->getItems();
         $this->assertCount( 1, $items );
+        $this->assertEquals( 1, $this->collection->count() );
         $this->assertEquals( $item, $items[0] );
     }
 
@@ -80,14 +81,14 @@ class CollectionTest extends PHPUnit_Framework_TestCase
 
     public function testClient()
     {
+        // A live API is needed for this test
+
         /*
         $href = 'http://127.0.0.1:8000/api/v1';
         $client = new GuzzleClient(['base_uri' => $href, 'debug' => true]);
         $this->collection = new \CollectionPlusJson\Collection( $href, $client );
          */
 
-        // get an item
-        //$items = $this->collection->get('/color')->getItems();
         /*
         $collection = $this->collection->get('/color?template');
         $template = $collection->getTemplate();
@@ -100,12 +101,18 @@ class CollectionTest extends PHPUnit_Framework_TestCase
          */
 
         /*
-        $collection = $this->collection->get('/order?template&limit=10');
-        $items = $collection->getItems();
-        foreach ($items as $item) {
-            $collection = $item->getLinkByRel("customer")->follow();
-            var_dump($collection->getHref()->getUrl());exit;
-        }
+        $collection = $this->collection->get('/color?queries&limit=1');
+        $collection = $collection->getQueryByRel('search')
+                                 ->setName('green')
+                                 ->query('?template');
+        $item = $collection->getFirstItem();
+
+        // change the firstname
+        $item->setName("gruen");
+
+        // add to template
+        $collection->getTemplate()->importItem($item);
+        echo $collection->put()->getFirstItem()->getName();
          */
     }
 

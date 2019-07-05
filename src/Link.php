@@ -132,6 +132,13 @@ class Link extends AbstractClient
     public function output()
     {
         $properties = get_object_vars( $this );
+        unset($properties['client']);
+        if (!$properties['render']) {
+            unset($properties['render']);
+        }
+        if (!$properties['prompt']) {
+            unset($properties['prompt']);
+        }
         $object = new \StdClass();
         foreach ($properties as $name => $value) {
             if (is_object( $value ) && !$value instanceof \StdClass) {

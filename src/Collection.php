@@ -109,6 +109,22 @@ class Collection extends AbstractClient
     }
 
     /**
+     * Get query object by rel
+     *
+     * @return Link
+     */
+    public function getLinkByRel(string $rel): Link
+    {
+        $links = $this->getLinks();
+        foreach ($links as $link) {
+            if ($link->getRel() === $rel) {
+                return $link;
+            };
+        }
+
+        return null;
+    }
+    /**
      * @param Item $item
      * @return Collection
      */
@@ -161,12 +177,29 @@ class Collection extends AbstractClient
         return $this;
     }
 
-    /**
+    /**y
      * @return Query[]
      */
     public function getQueries()
     {
         return $this->queries;
+    }
+
+    /**
+     * Get query object by rel
+     *
+     * @return Query
+     */
+    public function getQueryByRel(string $rel): Query
+    {
+        $queries = $this->getQueries();
+        foreach ($queries as $query) {
+            if ($query->getRel() === $rel) {
+                return $query;
+            };
+        }
+
+        return null;
     }
 
     /**
@@ -250,6 +283,15 @@ class Collection extends AbstractClient
         return $wrapper;
     }
 
+    /**
+     * Count the number of items in the collection
+     *
+     * @return int
+     */
+    public function count()
+    {
+        return count($this->getItems());
+    }
     private function assignVersion()
     {
         if (isset($this->json['version'])) {
@@ -270,9 +312,11 @@ class Collection extends AbstractClient
             foreach ($this->json['items'] as $item) {
                 $itemObject = new Item($item['href'], $this->client);
                 foreach ($item['data'] as $data) {
+                    $data = $this->insertOptionalParameters(['value', 'prompt'], $data);
                     $itemObject->addData($data['name'], $data['value'], $data['prompt']);
                 }
                 foreach ($item['links'] as $link) {
+                    $link = $this->insertOptionalParameters(['render', 'name', 'prompt'], $link);
                     $itemObject->addLink(new Link($link['href'], $link['rel'], $link['name'], $link['render'], $link['prompt'], $this->client));
                 }
                 $this->items[] = $itemObject;
@@ -285,6 +329,7 @@ class Collection extends AbstractClient
         if (isset($this->json['template']['data'])) {
             $this->template = new Template();
             foreach ($this->json['template']['data'] as $template) {
+                $template = $this->insertOptionalParameters(['prompt'], $template);
                 $this->template->addData($template['name'], $template['prompt']);
             }
         }
@@ -293,7 +338,10 @@ class Collection extends AbstractClient
     private function assignLinks()
     {
         if (isset($this->json['links'])) {
+
             foreach ($this->json['links'] as $link) {
+
+                $link = $this->insertOptionalParameters(['render', 'name', 'prompt'], $link);
                 $this->links[] = new Link($link['href'], $link['rel'], $link['name'], $link['render'], $link['prompt'], $this->client);
             }
         }
@@ -303,8 +351,11 @@ class Collection extends AbstractClient
     {
         if (isset($this->json['queries'])) {
             foreach ($this->json['queries'] as $query) {
+
+                $query = $this->insertOptionalParameters(['prompt'], $query);
                 $queryObject = new Query($query['href'], $query['rel'], $query['prompt'], $this->client);
                 foreach ($query['data'] as $data) {
+                    $data = $this->insertOptionalParameters(['value', 'prompt'], $data);
                     $queryObject->addData($data['name'], $data['value'], $data['prompt']);
                 }
                 $this->queries[] = $queryObject;
@@ -318,5 +369,16 @@ class Collection extends AbstractClient
             $error = $this->json['error'];
             $this->error = new Error($error['title'], $error['code'], $error['message']);
         }
+    }
+
+    private function insertOptionalParameters(array $params, $array)
+    {
+        foreach ($params as $param) {
+            if (!isset($array[$param])) {
+                $array[$param] = null;
+            }
+        }
+
+        return $array;
     }
 }

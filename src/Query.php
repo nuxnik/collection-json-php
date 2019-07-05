@@ -64,16 +64,6 @@ class Query extends AbstractClient
     }
 
     /**
-     * @param string $name
-     * @return Query
-     */
-    public function setName( $name )
-    {
-        $this->name = $name;
-        return $this;
-    }
-
-    /**
      * @param string $prompt
      * @return Query
      */
@@ -118,6 +108,10 @@ class Query extends AbstractClient
     public function output()
     {
         $properties = get_object_vars( $this );
+        unset($properties['client']);
+        if (!$properties['prompt']) {
+            unset($properties['prompt']);
+        }
         $object = new \StdClass();
         foreach ($properties as $name => $value) {
             if (is_array( $value )) {
@@ -134,4 +128,25 @@ class Query extends AbstractClient
         }
         return $object;
     }
+
+    /**
+     * Put template object to href
+     * 
+     * @return Collection
+     */
+    public function query(string $extension = null): Collection
+    {
+        $params = $this->getData(true);
+        $query  = http_build_query($params);
+        if ($query) {
+            if (!$extension) {
+                $extension = '?' . $query;
+            } else {
+                $extension .= '&' . $query;
+            }
+        }
+
+        return $this->dispatch("GET", $extension);
+    }
+
 }

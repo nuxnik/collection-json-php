@@ -77,6 +77,7 @@ class Item extends AbstractClient
     public function output()
     {
         $properties = get_object_vars( $this );
+        unset($properties['client']);
         $object = new \StdClass();
         foreach ($properties as $name => $value) {
             if (is_array( $value )) {
@@ -93,33 +94,4 @@ class Item extends AbstractClient
         }
         return $object;
     }
-    /**
-     * Get a data object value by name
-     * @return mixed
-     */
-    public function __call($name, $arguments)
-    {
-        if(preg_match('#^get(.+)#', $name, $match)){
-            foreach ($this->data as $data) {
-                if($data->getName() == lcfirst($match[1])){
-                    return $data->getValue();
-                }
-            }
-            $this->triggerNoMethodError($name);
-        } else if(preg_match('#^set(.+)#', $name, $match)) {
-            foreach ($this->data as $data) {
-                if($data->getName() == lcfirst($match[1])){
-                    $data->setValue($arguments[0]);
-                    if (isset($arguments[1])) {
-                        $data->setPrompt($arguments[1]);
-                    }
-                    return $this;
-                }
-            }
-            $this->triggerNoMethodError($name);
-        } else {
-            $this->triggerNoMethodError($name);
-        }
-    }
-
 }

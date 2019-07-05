@@ -10,7 +10,7 @@ class DataObject
     protected $name;
 
     /** @var  string|int|float|bool|null|array|object */
-    protected $value;
+    protected $value = null;
 
     /** @var  string */
     protected $prompt;
@@ -101,6 +101,9 @@ class DataObject
     public function output()
     {
         $properties = get_object_vars( $this );
+        if (!$properties['prompt']) {
+            unset($properties['prompt']);
+        }
         $object = new \StdClass();
         foreach ($properties as $name => $value) {
             $object->$name = $value;

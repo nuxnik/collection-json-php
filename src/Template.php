@@ -91,32 +91,6 @@ class Template
     }
 
     /**
-     * Get a data object value by name
-     * @return mixed
-     */
-    public function __call($name, $arguments)
-    {
-        if(preg_match('#^get(.+)#', $name, $match)){
-            foreach ($this->data as $data) {
-                if($data->getName() == lcfirst($match[1])){
-                    return $data->getValue();
-                }
-            }
-            $this->triggerNoMethodError($name);
-        } else if(preg_match('#^set(.+)#', $name, $match)) {
-            foreach ($this->data as $data) {
-                if($data->getName() == lcfirst($match[1])){
-                    $data->setValue($arguments[0]);
-                    return $this;
-                }
-            }
-            $this->triggerNoMethodError($name);
-        } else {
-            $this->triggerNoMethodError($name);
-        }
-    }
-
-    /**
      * Import Item object into template
      *
      * @return Template
@@ -132,7 +106,6 @@ class Template
                 }
             }
         }
-        print_r($this->data);exit;
 
         return $this;
     }

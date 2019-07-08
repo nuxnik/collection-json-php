@@ -11,8 +11,7 @@ class QueryTest extends PHPUnit_Framework_TestCase
         $this->query = new \CollectionPlusJson\Query(
             new \CollectionPlusJson\Util\Href( 'http://test.com/api/' ),
             'test',
-            'This is a test Query',
-            array()
+            'This is a test Query'
         );
     }
 

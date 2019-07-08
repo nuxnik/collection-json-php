@@ -288,10 +288,26 @@ class Collection extends AbstractClient
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return count($this->getItems());
     }
+    /**
+     * delete all items in the collection.
+     *
+     * @see CollectionPlusJson\AbstractClient::delete()
+     * @return Collection
+     */
+    public function delete(): self
+    {
+        $items = $this->getItems();
+        foreach ($items as $item) {
+            $item->delete();
+        }
+
+        return $this;
+    }
+
     private function assignVersion()
     {
         if (isset($this->json['version'])) {

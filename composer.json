@@ -1,22 +1,22 @@
 {
     "name": "nuxnik/collection-plus-json",
     "type" : "library",
-    "description": "Collection+Json PHP library. This is a read/write hypermedia-type designed to support management and querying of simple collections.",
-    "keywords": ["hypermedia", "collection-json-php", "collection", "json" , "php", "library", "rest", "soa", "api"],
+    "description": "Lightweight PHP Library for manipulation of Collection+Json hypermedia-type objects. Can be used as server or client",
+    "keywords": ["hypermedia", "collection-json-php", "collection", "json" , "php", "library", "rest", "soa", "api", "collection+json", "jsonapi", "restapi"],
     "homepage": "https://github.com/nuxnik/collection-json-php",
     "license": "MIT",
     "authors": [
+        {
+            "name": "S. Fleming",
+            "email": "nuxnik@int5.net",
+            "homepage": "https://github.com/nuxnik/",
+            "role": "Software Engineer/Developer"
+        },
         {
             "name": "Enmanuel Cueva",
             "email": "enmanuel@cueva-e.me",
             "homepage": "http://cueva-e.me",
             "role": "Software Engineer/Developer"
-        },
-        {
-            "name": "S. Fleming",
-            "email": "nuxnik@int5.net",
-            "homepage": "https://github.com/nuxnik/",
-            "role": "Software"
         }
     ],
     "require": {

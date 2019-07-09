@@ -2,7 +2,7 @@
     "name": "nuxnik/collection-plus-json",
     "type" : "library",
     "description": "Lightweight PHP Library for manipulation of Collection+Json hypermedia-type objects. Can be used as server or client",
-    "keywords": ["hypermedia", "collection-json-php", "collection", "json" , "php", "library", "rest", "soa", "api", "collection+json", "jsonapi", "restapi"],
+    "keywords": ["hypermedia", "collection-json-php", "collection", "json" , "php", "library", "rest", "soa", "api", "collection-json", "jsonapi", "restapi"],
     "homepage": "https://github.com/nuxnik/collection-json-php",
     "license": "MIT",
     "authors": [

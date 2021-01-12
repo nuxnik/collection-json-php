@@ -3,3 +3,5 @@ vendor
 bin
 coverage.clover
 *.swp
+.php_cs.cache
+.phpunit.result.cache

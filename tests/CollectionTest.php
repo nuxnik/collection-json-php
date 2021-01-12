@@ -1,14 +1,15 @@
 <?php
 
-use CollectionPlusJson\Template;
 use CollectionPlusJson\Error;
-use CollectionPlusJson\Link;
 use CollectionPlusJson\Item;
+use CollectionPlusJson\Link;
 use CollectionPlusJson\Query;
+use CollectionPlusJson\Template;
 use CollectionPlusJson\Util\Href;
 use GuzzleHttp\Client as GuzzleClient;
+use PHPUnit\Framework\TestCase;
 
-class CollectionTest extends PHPUnit_Framework_TestCase
+class CollectionTest extends TestCase
 {
     /** @var  string */
     protected $href = 'http://test.com/api/';
@@ -16,8 +17,9 @@ class CollectionTest extends PHPUnit_Framework_TestCase
     /** @var  \CollectionPlusJson\Collection */
     protected $collection;
 
-    public function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->assertEquals('http://test.com/api/', $this->href);
         $this->collection = new \CollectionPlusJson\Collection( $this->href, new GuzzleClient() );
     }
